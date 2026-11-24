@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrimeEstates</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Body Background Image */
+        body {
+            background: linear-gradient(rgba(248, 250, 252, 0.92), rgba(248, 250, 252, 0.92)), 
+                        url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD5wMUBoMNmYiJ5eRVr_eK6LbmYqGd_Q_s8DzzYgvI58g66Yjvi1QhhZw&s=10') center/cover fixed no-repeat;
+            color: #0f172a;
+        }
+
+        /* Navbar */
+        header {
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        .logo span { color: #ffffff; }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #38bdf8;
+            color: #0f172a;
+        }
+
+        /* CSS-Only Page Switching Logic */
+        .page-section {
+            display: none;
+        }
+
+        /* Default Home Page Visible */
+        #home, .page-section:target {
+            display: block;
+        }
+
+        /* Hide Home when another section is targeted */
+        #about:target ~ #home,
+        #contact:target ~ #home {
+            display: none;
+        }
+
+        /* Shared Container & Styling */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        /* ================= PAGE 1: HOME ================= */
+        .hero {
+            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXc5CCBO_CaLu7a5zRTxBkQeLy9koYj7dHZVbf3XhoOQ&s=10') center/cover;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 0 20px;
+            border-radius: 12px;
+        }
+
+        .hero h1 { font-size: 36px; margin-bottom: 10px; }
+        .hero p { font-size: 18px; color: #cbd5e1; }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-body { padding: 20px; }
+        .price { font-size: 20px; font-weight: bold; color: #0284c7; margin-bottom: 5px; }
+        .title { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+        .specs { font-size: 13px; color: #64748b; margin-bottom: 15px; }
+
+        .btn-card {
+            display: block;
+            text-align: center;
+            background: #0f172a;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .feature-box {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* ================= FORMS & VALIDATION ================= */
+        .custom-form {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            max-width: 650px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .custom-form input, 
+        .custom-form textarea, 
+        .custom-form select {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .custom-form input:focus:invalid, 
+        .custom-form textarea:focus:invalid,
+        .custom-form select:focus:invalid {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+
+        .custom-form input:valid, 
+        .custom-form textarea:valid,
+        .custom-form select:valid {
+            border-color: #22c55e;
+        }
+
+        .custom-form button {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .custom-form button:hover {
+            background: #0284c7;
+        }
+
+        /* ================= PAGE 2: ABOUT US ================= */
+        .about-content {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            line-height: 1.8;
+            color: #334155;
+        }
+
+        /* Footer */
+        footer {
+            background: #020617;
+            color: #94a3b8;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <header>
+        <a href="#home" class="logo">Prime<span>Estates</span></a>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- PAGE 2: ABOUT US -->
+    <div id="about" class="page-section">
+        <div class="container">
+            <h2 class="section-title">About PrimeEstates</h2>
+            <p class="section-subtitle">Pakistan's Premier Real Estate Portal</p>
+            <div class="about-content">
+                <p>PrimeEstates ek modern real estate portal hai jo khareedaro aur bechne walo ko ek hi jagah aasan aur shaffaf tareeqay se jorta hai.</p>
+                <br>
+                <p>Hamara maqsad property ki khareed-o-farookht ko mehfooz aur asan banana hai taake aap baghair kisi pareshani ke apni pasand ka ghar ya plot dhoond sakein.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: CONTACT US FORM -->
+    <div id="contact" class="page-section">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Aap ki rehnumai ke liye hum har waqt mojood hain</p>
+            
+            <form class="custom-form" action="#" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" placeholder="Apna poora naam likhein" required minlength="3">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" placeholder="example@domain.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="03001234567" pattern="03[0-9]{9}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Apna paigham yahan likhein..." required minlength="10"></textarea>
+                </div>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PAGE 1: HOME (DEFAULT VISIBLE PAGE) -->
+    <div id="home" class="page-section">
+        <section class="hero">
+            <h1>Find Your Dream Property</h1>
+            <p>Buy, Sell, & Rent Premium Properties Across Pakistan</p>
+        </section>
+
+        <div class="container">
+            <h2 class="section-title">Featured Properties</h2>
+            <p class="section-subtitle">Verified properties with real photos</p>
+
+            <div class="property-grid">
+                <!-- CARD 1 -->
+                <div class="card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNNA4a5E5CugItOXmXqJpQMUvq1jsmYqCi7CPPP0as3Q&s=10" alt="Property Image 1">
+                    <div class="card-body">
+                        <div class="price">Rs. 2.5 Crore</div>
+                        <div class="title">1 Kanal Luxury Modern Villa</div>
+                        <div class="specs">5 Beds • 6 Baths • DHA Phase 6</div>
+                        <a href="#contact" class="btn-card">Inquire Now</a>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4cqxDGKlgO4jWdqSmVxDurxFhV_psD_tDD09DKK026GZEFJrR4sJ5tyos&s=10" alt="Property Image 2">
+                    <div class="card-body">
+                        <div class="price">Rs. 95 Lakhs</div>
+                        <div class="title">2-Bed Executive Apartment</div>
+                        <div class="specs">2 Beds • 2 Baths • Gulberg Heights</div>
+                        <a href="#contact" class="btn-card">Inquire Now</a>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCA10XNvTE7-SjIF-Y6791h6vfTHAqi5Qr8J0-yuYLl3tKKnWHRe7sYvo&s=10" alt="Property Image 3">
+                    <div class="card-body">
+                        <div class="price">Rs. 1.8 Crore</div>
+                        <div class="title">10 Marla Double Story House</div>
+                        <div class="specs">4 Beds • 5 Baths • Bahria Town</div>
+                        <a href="#contact" class="btn-card">Inquire Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h3>Verified Listings</h3>
+                    <p style="font-size:13px; color:#64748b; margin-top:5px;">Tamam properties mukammal jaanch ke baad add ki jaati hain.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Trusted Agents</h3>
+                    <p style="font-size:13px; color:#64748b; margin-top:5px;">Pakistan ke top real estate dealers se direct rabta karein.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Best Prices</h3>
+                    <p style="font-size:13px; color:#64748b; margin-top:5px;">Market rate ke ain mutabiq behtareen deals hasil karein.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PrimeEstates. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
+</body>
+</html>
